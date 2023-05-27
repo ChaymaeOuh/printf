@@ -9,22 +9,29 @@
  * @width: get width.
  * @precision: Precision specification
  * @size: Size specifier
+ *
  * Return: 1 or 2;
  */
 int handle_print(const char *fmt, int *ind, va_list list, char buffer[],
 	int flags, int width, int precision, int size)
 {
 	int i, unknow_len = 0, printed_chars = -1;
-	fmt_t fmt_types[] = {
-		{'c', print_char}, {'s', print_string}, {'%', print_percent},
-		{'i', print_int}, {'d', print_int}, {'b', print_binary},
-		{'u', print_unsigned}, {'o', print_octal}, {'x', print_hexadecimal},
-		{'X', print_hexa_upper}, {'p', print_pointer}, {'S', print_non_printable},
-		{'r', print_reverse}, {'R', print_rot13string}, {'\0', NULL}
+	fmt_f fmt_types[] = {
+		{'c', my_print_char}, {'s', my_print_string},
+		{'%', my_print_percent},
+		{'i', my_print_int}, {'d', my_print_int},
+		{'b', my_print_binary},
+		{'u', my_print_unsigned}, {'o', my_print_octal},
+		{'x', my_print_hexadecimal},
+		{'X', my_print_hexa_upper}, {'p', my_print_pointer},
+		{'S', my_print_non_printable},
+		{'r', my_print_reverse}, {'R', my_print_rot13string},
+		{'\0', NULL}
 	};
 	for (i = 0; fmt_types[i].fmt != '\0'; i++)
 		if (fmt[*ind] == fmt_types[i].fmt)
-			return (fmt_types[i].fn(list, buffer, flags, width, precision, size));
+			return (fmt_types[i].fn(list, buffer, flags,
+				width, precision, size));
 
 	if (fmt_types[i].fmt == '\0')
 	{
@@ -47,3 +54,4 @@ int handle_print(const char *fmt, int *ind, va_list list, char buffer[],
 	}
 	return (printed_chars);
 }
+
